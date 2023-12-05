@@ -1,14 +1,20 @@
 import 'package:bbu_mobile_app/screens/change_language_screen.dart';
+import 'package:bbu_mobile_app/screens/image_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:localstorage/localstorage.dart';
+
+import '../auth/models/login_response.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  LoginResponse? loginResponse;
+  HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final LocalStorage storage = LocalStorage('user_login_key');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,13 +70,18 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 0.6,
             ),
             ListTile(
-              onTap: (){},
+              onTap: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ImageListScreen()),
+                );
+              },
               leading: Icon(
                 Icons.home,
                 color: Colors.white,
               ),
               title: Text(
-                "For Enrollment",
+                "SQLite",
                 style: TextStyle(color: Colors.white),
               ),
               trailing: Icon(
@@ -195,10 +206,18 @@ class _HomeScreenState extends State<HomeScreen> {
               },
               icon: Icon(
                 Icons.language,
-              ))
+              )),
+          IconButton(
+            onPressed: () {
+              storage.clear();
+              Navigator.pushNamedAndRemoveUntil(context, "/", (route) => false);
+            },
+            icon: Icon(Icons.logout),
+          )
         ],
-        title: Text("Build Bright University"),
-      ),
+        title: Text("Assignment",
+          style: TextStyle(color: Colors.white),),
+      )
     );
   }
 }
